@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Data Mahasiswa</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("assets/foto/bg.jpg");
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary" style="background-color: #b49f9c !important;">
+        <a class="navbar-brand text-white" href="#" style="padding-left: 35px;">DATA MAHASISWA</a>
+    </nav>
+    <div class="container mt-3">
+        <div id="secondBar">
+            <h2>안녕하세요, ౨ৎ ⋆ ｡˚</h2>
+        </div>
+
+        <hr>
+
+        <div>
+            <p>"Hiduplah seolah engkau mati besok. Belajarlah seolah engkau hidup selamanya." ‧˚₊⋅(Mahatma Gandhi)⋅₊˚‧</p>
+        </div>
+
+        <hr>
+
+        <p> <span id="currentTime" style="float: right;"></span></p>
+        <script>
+            function updateCurrentTime() {
+                var currentTime = new Date();
+                var hours = currentTime.getHours();
+                var minutes = currentTime.getMinutes();
+                var seconds = currentTime.getSeconds();
+                hours = (hours < 10 ? "0" : "") + hours;
+                minutes = (minutes < 10 ? "0" : "") + minutes;
+                seconds = (seconds < 10 ? "0" : "") + seconds;
+                document.getElementById("currentTime").innerHTML = hours + ":" + minutes + ":" + seconds;
+            }
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+        </script>
+
+
+
+        <br>
+        <div class="add-data-container">
+            <h4>Tambah Data Mahasiswa</h4>
+            <br>
+            <form id="add-data-form">
+                <div class="form-group">
+                    <label for="nim">NIM</label>
+                    <input type="text" id="nim" name="nim" class="form-control" value="">
+                    <span class="error-message" id="nim-error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" class="form-control" value="">
+                    <span class="error-message" id="nama-error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="alamat">Alamat</label>
+                    <input type="text" id="alamat" name="alamat" class="form-control" value="">
+                    <span class="error-message" id="alamat-error"></span>
+                </div>
+                <button type="submit" id="submit-button" class="btn btn-primary float-right" style="background-color: #b49f9c !important;" >Tambah Data</button>
+                <br>
+            </form>
+        </div>
+        <br>
+        <br>
+        <table id="tabel" class="table table-striped">
+            <thead class="bg-primary text-white"style="background-color: #b49f9c !important;">
+                <tr>
+                    <th>NIM</th>
+                    <th>Nama Lengkap</th>
+                    <th>Alamat</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="table-body" class="bg-white">
+            </tbody>
+        </table>
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Data Mahasiswa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-data-form">
+                            <div class="form-group">
+                                <label for="edit-nim">NIM</label>
+                                <input type="text" id="edit-nim" name="edit-nim" class="form-control" readonly required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-nama">Nama Lengkap</label>
+                                <input type="text" id="edit-nama" name="edit-nama" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-alamat">Alamat</label>
+                                <input type="text" id="edit-alamat" name="edit-alamat" class="form-control" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="update-button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <div id="alert-container">
+                    <div class="alert alert-dismissible fade" role="alert">
+                        <div class="card-header">
+                            <strong class="alert-title warna"></strong>
+                            <button type="button" style="float:right" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <b style="float:right">Just now&nbsp;&nbsp;</b>
+                        </div>
+                        <div class="card-body" style="background-color: #f2f2f2;">
+                            <span class="alert-message"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <script>
+        document.getElementById('add-data-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var nim = document.getElementById('nim').value;
+            var nama = document.getElementById('nama').value;
+            var alamat = document.getElementById('alamat').value;
+            if (!nim || !nama || !alamat) {
+                showAlert("Warning!", "Tidak Dapat Menambah Mahasiswa.", "warning");
+                return;
+            } else {
+                document.getElementById('nim-error').textContent = '';
+                document.getElementById('nama-error').textContent = '';
+                document.getElementById('alamat-error').textContent = '';
+            }
+            if (document.getElementById('submit-button').innerText === "Tambah Data") {
+                insertRow(nim, nama, alamat);
+            } else {
+                updateRow(nim, nama, alamat);
+            }
+            resetForm();
+            showAlert("Addedd!", "Mahasiswa Baru Telah Ditambahkan.", "success");
+        });
+
+        function insertRow(nim, nama, alamat) {
+            var table = document.getElementById("table-body");
+            var row = table.insertRow();
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+
+            cell1.innerHTML = nim;
+            cell2.innerHTML = nama;
+            cell3.innerHTML = alamat;
+            cell4.innerHTML = '<button onclick="editRow(this)" class="btn btn-warning m-1" style="background-color:#90EE90;border:none">Edit</button> <button onclick="deleteRow(this)" class="btn btn-danger m-1" style="background-color:#FA8072;border:none">Hapus</button>';
+
+        }
+
+        var rowToEdit = null;
+
+        function editRow(btn) {
+            rowToEdit = btn.parentNode.parentNode;
+            document.getElementById('edit-nim').value = rowToEdit.cells[0].innerHTML;
+            document.getElementById('edit-nama').value = rowToEdit.cells[1].innerHTML;
+            document.getElementById('edit-alamat').value = rowToEdit.cells[2].innerHTML;
+            $('#editModal').modal('show');
+        }
+        document.getElementById('update-button').addEventListener('click', function() {
+            var nim = document.getElementById('edit-nim').value;
+            var nama = document.getElementById('edit-nama').value;
+            var alamat = document.getElementById('edit-alamat').value;
+            var rowIndex = parseInt(this.getAttribute('data-row-index'));
+
+            if (!nim || !nama || !alamat) {
+                return;
+            }
+            updateRow(nim, nama, alamat);
+            $('#editModal').modal('hide');
+            resetForm();
+            showAlert("Updated!", "Data Mahasiswa Berhasil Di Perbaharui", "info");
+        });
+
+        function updateRow(nim, nama, alamat) {
+            rowToEdit.cells[0].innerHTML = nim;
+            rowToEdit.cells[1].innerHTML = nama;
+            rowToEdit.cells[2].innerHTML = alamat;
+        }
+
+
+        function deleteRow(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            showAlert("Deleted!", "Data Mahasiswa Berhasil Dihapus", "danger");
+        }
+
+        function resetForm() {
+            document.getElementById('nim').value = '';
+            document.getElementById('nama').value = '';
+            document.getElementById('alamat').value = '';
+            document.getElementById('submit-button').innerText = "Tambah Data";
+            rowToEdit = null;
+        }
+
+        function showAlert(title, message, color) {
+            var alertContainer = document.getElementById('alert-container');
+            var alertElement = alertContainer.querySelector('.alert');
+
+            alertElement.querySelector('.alert-title').textContent = title;
+            alertElement.querySelector('.alert-message').textContent = message;
+
+            alertElement.classList.remove('alert-success', 'alert-info', 'alert-warning', 'alert-danger');
+            alertElement.querySelector('.card-header').classList.add('alert-' + color);
+
+            alertElement.classList.add('show');
+            alertElement.classList.add('fade');
+
+            setTimeout(function() {
+                alertElement.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
